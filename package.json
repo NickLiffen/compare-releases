@@ -1,0 +1,38 @@
+{
+	"name": "compare-releases",
+	"version": "1.0.0",
+	"description": "A GitHub Action which compares releasesa across repos",
+	"main": "main.ts",
+	"scripts": {
+		"build": "tsc && ncc build -o dist",
+		"format": "prettier --write '**/*.ts'",
+		"format-check": "prettier --check '**/*.ts'",
+		"lint": "eslint . --ext .ts",
+		"lint-fix": "eslint --fix . --ext .ts",
+		"test": "jest --coverage"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@actions/core": "^1.4.0",
+		"@octokit/graphql": "^4.8.0",
+		"@octokit/rest": "^18.10.0"
+	},
+	"devDependencies": {
+		"@types/json-schema": "^7.0.7",
+		"@types/node": "^15.12.4",
+		"@typescript-eslint/eslint-plugin": "^4.28.0",
+		"@typescript-eslint/parser": "^4.28.0",
+		"@vercel/ncc": "^0.28.6",
+		"eslint": "^7.29.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-jest": "^24.3.6",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.3.1",
+		"typescript": "^4.3.4"
+	},
+	"engines": {
+		"node": "12"
+	}
+}

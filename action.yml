@@ -1,0 +1,28 @@
+name: 'Compare Releases Across Repositories'
+author: 'NickLiffen'
+description: 'A GitHub Action which compares releasesa across two GitHub  '
+inputs:
+  destinationOrganisation:
+    description: 'GitHub Organisation of the Destination Repository'
+    required: true
+  destinationRepository:
+    description: 'GitHub Repository of the Destination Repository'
+    required: true
+  sourceOrganisation:
+    description: 'GitHub Organisation of the Source Repository'
+    required: true
+  sourceRepository:
+    description: 'GitHub Repository of the Source Repository'
+    required: true
+  token:
+    description: 'A repo scoped GitHub Personal Access Token'
+    required: true
+outputs:
+  result:
+    description: 'The name of the repository with the newer release '
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'target'  
+  color: 'blue'
