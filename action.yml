@@ -12,8 +12,10 @@ inputs:
     description: 'A repo scoped GitHub Personal Access Token'
     required: true
 outputs:
-  result:
+  repo:
     description: 'The name of the repository with the newer release. Format: Org/Repo '
+  tagName:
+    description: 'The name of the tag on the destination repository. '
 runs:
   using: 'node12'
   main: 'dist/index.js'

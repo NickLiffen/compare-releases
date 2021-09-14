@@ -3361,7 +3361,8 @@ const query = async (owner, repo, token) => {
             nodes {
               isLatest
               isPrerelease
-              createdAt          
+              createdAt
+              tagName          
             }
           }
         }
@@ -3373,7 +3374,7 @@ const query = async (owner, repo, token) => {
             },
         }));
         if (releases.length === 0) {
-            return { createdAt: null, isLatest: true, isPrerelease: false };
+            return { createdAt: null, isLatest: true, isPrerelease: false, tagName: '' };
         }
         return releases[0];
     }
@@ -3399,9 +3400,10 @@ const run = async () => {
         /* Getting release information from the source repository */
         const sourceResponse = (await utils_query(source.sourceOrg, source.sourceRepo, token));
         /* Sending Data to be processed to work out which release is newer */
-        const answer = (await utils_compare(destinationResponse, sourceResponse, destination, source));
+        const repo = (await utils_compare(destinationResponse, sourceResponse, destination, source));
         /* Sending data back to the client */
-        (0,core.setOutput)('result', answer);
+        (0,core.setOutput)('repo', repo);
+        (0,core.setOutput)('tagName', destinationResponse.tagName);
     }
     catch (e) {
         (0,core.setFailed)(`version-check failure: ${e.message}`);

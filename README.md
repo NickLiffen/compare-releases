@@ -27,7 +27,20 @@ Thinking of it in `git` terms. The `destination*` is the `base` branch, and the 
 
 ## Outputs
 
-It will output a string structured as the repository which has the latest release. 
+There are two outputs. `repo` and `tagName`. 
+
+The `repo` output is a string structured as the repository which has the latest release. 
+
+The `tagName` output is a string structured as the latest tag on the destination repository.
+
+To access these outputs you can do something as such: 
+
+```
+${{ steps.compare-releases.outputs.repo }}
+${{ steps.compare-releases.outputs.tagName }}
+```
+
+The `repo` is formated in this string format:
 
 ```
 OrgName/RepoName e.g. GitHub/octokit
