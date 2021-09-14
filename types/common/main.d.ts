@@ -1,13 +1,13 @@
 type Inputs = [destination, source, token];
 
 type destination = {
-  destinationOrganisation: string;
-  destinationRepository: string;
+  destinationOrg: string;
+  destinationRepo: string;
 };
 
 type source = {
-  sourceOrganisation: string;
-  sourceRepository: string;
+  sourceOrg: string;
+  sourceRepo: string;
 };
 
 type token = string;
