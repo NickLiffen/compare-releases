@@ -46,7 +46,7 @@ The `repo` is formated in this string format:
 OrgName/RepoName e.g. GitHub/octokit
 ```
 
-If there has been any error, an error will be thrown and the action will fail with an appropriate error message. 
+If there has been any error, an error will be thrown and the action will fail with an appropriate error message.  
 
 ## Example usage
 
