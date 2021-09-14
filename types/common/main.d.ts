@@ -16,6 +16,7 @@ type queryFunctionResponse = {
   isLatest: boolean;
   isPrerelease: boolean;
   createdAt: string | null;
+  tagName: string;
 };
 
 type queryResponse = {
@@ -24,11 +25,4 @@ type queryResponse = {
       nodes: queryFunctionResponse[];
     };
   };
-};
-
-type compareResponse = {
-  status: number;
-  body: string;
-  latestReleaseRepo: string | null;
-  shortAnswer: string | null;
 };

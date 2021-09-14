@@ -13,7 +13,8 @@ const query = async (owner: string, repo: string, token: string): Promise<queryF
             nodes {
               isLatest
               isPrerelease
-              createdAt          
+              createdAt
+              tagName          
             }
           }
         }
@@ -25,7 +26,7 @@ const query = async (owner: string, repo: string, token: string): Promise<queryF
       },
     })) as queryResponse;
     if (releases.length === 0) {
-      return { createdAt: null, isLatest: true, isPrerelease: false };
+      return { createdAt: null, isLatest: true, isPrerelease: false, tagName: '' };
     }
     return releases[0];
   } catch (error) {
