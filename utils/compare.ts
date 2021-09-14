@@ -52,19 +52,21 @@ const compare = async (
   /* Converting to timestamps for conversation  */
 
   const sourceCreatedAtTimestamp = sourceResponse.createdAt ? new Date(sourceResponse.createdAt) : new Date();
-  const destinationCreatedAtTimestamp = sourceResponse.createdAt ? new Date(sourceResponse.createdAt) : new Date();
+  const destinationCreatedAtTimestamp = destinationResponse.createdAt
+    ? new Date(destinationResponse.createdAt)
+    : new Date();
 
   /* Source Release > Destination Release  */
 
   if (sourceCreatedAtTimestamp > destinationCreatedAtTimestamp) {
-    console.log(`The source repository is newer than the destination repository. Proceeding with the release.`);
+    console.log(`The source repository is newer than the destination repository.`);
     return `${source.sourceOrg}/${source.sourceRepo}`;
   }
 
   /* Destination Release > Source Release  */
 
   if (destinationCreatedAtTimestamp > sourceCreatedAtTimestamp) {
-    console.log(`The destination repository has a release newer then the source repository`);
+    console.log(`The destination repository has a release newer then åthe source repository`);
     return `${destination.destinationOrg}/${destination.destinationRepo}`;
   }
 
