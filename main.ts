@@ -14,22 +14,18 @@ const run = async (): Promise<void> => {
     /* Getting release information from the destination repository */
 
     const destinationResponse = (await query(
-      destination.destinationOrganisation,
-      destination.destinationRepository,
+      destination.destinationOrg,
+      destination.destinationRepo,
       token,
     )) as queryFunctionResponse;
 
     /* Getting release information from the source repository */
 
-    const sourceResponse = (await query(
-      source.sourceOrganisation,
-      source.sourceRepository,
-      token,
-    )) as queryFunctionResponse;
+    const sourceResponse = (await query(source.sourceOrg, source.sourceRepo, token)) as queryFunctionResponse;
 
     /* Sending Data to be processed to work out which release is newer */
 
-    const answer = (await compare(destinationResponse, sourceResponse, destination, source)) as compareResponse;
+    const answer = (await compare(destinationResponse, sourceResponse, destination, source)) as string;
 
     /* Sending data back to the client */
 

@@ -3298,33 +3298,18 @@ var core = __nccwpck_require__(186);
 ;// CONCATENATED MODULE: ./utils/compare.ts
 const compare = async (destinationResponse, sourceResponse, destination, source) => {
     if (destinationResponse.createdAt === null) {
-        console.log(`There are no release(s) on the following repository: ${destination.destinationOrganisation}/${destination.destinationRepository}. Nothing to compare`);
-        return {
-            status: 500,
-            body: `There are no release(s) on the following repository: ${destination.destinationOrganisation}/${destination.destinationRepository}. Nothing to compare`,
-            latestReleaseRepo: null,
-            shortAnswer: null,
-        };
+        console.log(`There are no release(s) on the following repository: ${destination.destinationOrg}/${destination.destinationRepo}. Nothing to compare`);
+        throw new Error(`There are no release(s) on the following repository: ${destination.destinationOrg}/${destination.destinationRepo}. Nothing to compare`);
     }
     /* Maybe this logic could be changed (pre-release)? Basically if this isn't the latest release I would guess it's something wrong with my query */
     if (!destinationResponse.isLatest || destinationResponse.isPrerelease) {
-        console.log(`The latest release of ${destination.destinationOrganisation}/${destination.destinationRepository} repository is either a pre-release of not the latest version. eek!`);
-        return {
-            status: 500,
-            body: `The latest irelease of ${destination.destinationOrganisation}/${destination.destinationRepository} repository is either a pre-release of not the latest version. eek!`,
-            latestReleaseRepo: null,
-            shortAnswer: null,
-        };
+        console.log(`The latest release of ${destination.destinationOrg}/${destination.destinationRepo} repository is either a pre-release of not the latest version. eek!`);
+        throw new Error(`The latest release of ${destination.destinationOrg}/${destination.destinationRepo} repository is either a pre-release of not the latest version. eek!`);
     }
     /* Maybe this logic could be changed (pre-release)? Basically if this isn't the latest release I would guess it's something wrong with my query */
     if (!sourceResponse.isLatest || sourceResponse.isPrerelease) {
-        console.log(`The latest release of ${source.sourceOrganisation}/${source.sourceRepository} repository is either a pre-release of not the latest version. eek!`);
-        return {
-            status: 500,
-            body: `The latest release of ${source.sourceOrganisation}/${source.sourceRepository} repository is either a pre-release of not the latest version. eek!`,
-            latestReleaseRepo: null,
-            shortAnswer: null,
-        };
+        console.log(`The latest release of ${source.sourceOrg}/${source.sourceRepo} repository is either a pre-release of not the latest version. eek!`);
+        throw new Error(`The latest release of ${source.sourceOrg}/${source.sourceRepo} repository is either a pre-release of not the latest version. eek!`);
     }
     /* Printing out the timestamps for people can manualy validate if they like */
     console.log(`The timestamp of the destination repository is: ${destinationResponse.createdAt}`);
@@ -3332,12 +3317,7 @@ const compare = async (destinationResponse, sourceResponse, destination, source)
     /* If there is a release in the destination, but not the source, tedhnically the source is beheind, which means we are going to report back true  */
     if (!sourceResponse.createdAt && destinationResponse.createdAt) {
         console.log('There is no release on the source repository, but there is one on the release, destination repo ahead.');
-        return {
-            status: 200,
-            body: 'no release on source, but there is one on the release',
-            latestReleaseRepo: `${destination.destinationOrganisation}/${destination.destinationRepository}`,
-            shortAnswer: 'destination',
-        };
+        return `${destination.destinationOrg}/${destination.destinationRepo}`;
     }
     /* Converting to timestamps for conversation  */
     const sourceCreatedAtTimestamp = sourceResponse.createdAt ? new Date(sourceResponse.createdAt) : new Date();
@@ -3345,41 +3325,26 @@ const compare = async (destinationResponse, sourceResponse, destination, source)
     /* Source Release > Destination Release  */
     if (sourceCreatedAtTimestamp > destinationCreatedAtTimestamp) {
         console.log(`The source repository is newer than the destination repository. Proceeding with the release.`);
-        return {
-            status: 200,
-            body: 'source release > destnation release',
-            latestReleaseRepo: `${source.sourceOrganisation}/${source.sourceRepository}`,
-            shortAnswer: 'source',
-        };
+        return `${source.sourceOrg}/${source.sourceRepo}`;
     }
     /* Destination Release > Source Release  */
     if (destinationCreatedAtTimestamp > sourceCreatedAtTimestamp) {
-        console.log(`The destination repository is newer than the source repository. Proceeding with the release.`);
-        return {
-            status: 200,
-            body: 'destnation release > source release',
-            latestReleaseRepo: `${destination.destinationOrganisation}/${destination.destinationRepository}`,
-            shortAnswer: 'destination',
-        };
+        console.log(`The destination repository has a release newer then the source repository`);
+        return `${destination.destinationOrg}/${destination.destinationRepo}`;
     }
-    return {
-        status: 500,
-        body: 'error, error, error',
-        latestReleaseRepo: null,
-        shortAnswer: null,
-    };
+    throw new Error(`Something went wrong. Got to a stage which it shouldn't have.`);
 };
 /* harmony default export */ const utils_compare = (compare);
 
 ;// CONCATENATED MODULE: ./utils/getInputs.ts
 
 const getInputs = async () => {
-    const destinationOrganisation = (0,core.getInput)('destinationOrganisation');
     const destinationRepository = (0,core.getInput)('destinationRepository');
-    const sourceOrganisation = (0,core.getInput)('sourceOrganisation');
     const sourceRepository = (0,core.getInput)('sourceRepository');
     const token = (0,core.getInput)('token');
-    return [{ destinationOrganisation, destinationRepository }, { sourceOrganisation, sourceRepository }, token];
+    const [destinationOrg, destinationRepo] = destinationRepository.split('/');
+    const [sourceOrg, sourceRepo] = sourceRepository.split('/');
+    return [{ destinationOrg, destinationRepo }, { sourceOrg, sourceRepo }, token];
 };
 /* harmony default export */ const utils_getInputs = (getInputs);
 
@@ -3430,9 +3395,9 @@ const run = async () => {
         /* Getting inputs */
         const [destination, source, token] = await utils_getInputs();
         /* Getting release information from the destination repository */
-        const destinationResponse = (await utils_query(destination.destinationOrganisation, destination.destinationRepository, token));
+        const destinationResponse = (await utils_query(destination.destinationOrg, destination.destinationRepo, token));
         /* Getting release information from the source repository */
-        const sourceResponse = (await utils_query(source.sourceOrganisation, source.sourceRepository, token));
+        const sourceResponse = (await utils_query(source.sourceOrg, source.sourceRepo, token));
         /* Sending Data to be processed to work out which release is newer */
         const answer = (await utils_compare(destinationResponse, sourceResponse, destination, source));
         /* Sending data back to the client */
