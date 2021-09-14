@@ -24,7 +24,7 @@ const run = async (): Promise<void> => {
     const sourceResponse = (await query(source.sourceOrg, source.sourceRepo, token)) as queryFunctionResponse;
 
     /* Sending Data to be processed to work out which release is newer */
-
+    
     const repo = (await compare(destinationResponse, sourceResponse, destination, source)) as string;
 
     /* Sending data back to the client */
