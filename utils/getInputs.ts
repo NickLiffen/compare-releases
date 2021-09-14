@@ -1,13 +1,14 @@
 import { getInput } from '@actions/core';
 
 const getInputs = async (): Promise<Inputs> => {
-  const destinationOrganisation = getInput('destinationOrganisation');
   const destinationRepository = getInput('destinationRepository');
-  const sourceOrganisation = getInput('sourceOrganisation');
   const sourceRepository = getInput('sourceRepository');
   const token = getInput('token');
 
-  return [{ destinationOrganisation, destinationRepository }, { sourceOrganisation, sourceRepository }, token];
+  const [destinationOrg, destinationRepo] = destinationRepository.split('/');
+  const [sourceOrg, sourceRepo] = sourceRepository.split('/');
+
+  return [{ destinationOrg, destinationRepo }, { sourceOrg, sourceRepo }, token];
 };
 
 export default getInputs;
