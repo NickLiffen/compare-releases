@@ -24,12 +24,13 @@ const run = async (): Promise<void> => {
     const sourceResponse = (await query(source.sourceOrg, source.sourceRepo, token)) as queryFunctionResponse;
 
     /* Sending Data to be processed to work out which release is newer */
-
-    const answer = (await compare(destinationResponse, sourceResponse, destination, source)) as string;
+    
+    const repo = (await compare(destinationResponse, sourceResponse, destination, source)) as string;
 
     /* Sending data back to the client */
 
-    setOutput('result', answer);
+    setOutput('repo', repo);
+    setOutput('tagName', destinationResponse.tagName);
   } catch (e: any) {
     setFailed(`version-check failure: ${e.message}`);
   }
