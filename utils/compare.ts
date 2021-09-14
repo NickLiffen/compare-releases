@@ -59,14 +59,14 @@ const compare = async (
   /* Source Release > Destination Release  */
 
   if (sourceCreatedAtTimestamp > destinationCreatedAtTimestamp) {
-    console.log(`The source repository is newer than the destination repository.`);
+    console.log(`The source repository has a release newer then the destination repository`);
     return `${source.sourceOrg}/${source.sourceRepo}`;
   }
 
   /* Destination Release > Source Release  */
 
   if (destinationCreatedAtTimestamp > sourceCreatedAtTimestamp) {
-    console.log(`The destination repository has a release newer then åthe source repository`);
+    console.log(`The destination repository has a release newer then the source repository`);
     return `${destination.destinationOrg}/${destination.destinationRepo}`;
   }
 
