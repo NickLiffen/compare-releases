@@ -20,5 +20,5 @@ runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
-  icon: 'target'  
+  icon: 'target'
   color: 'blue'
